@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  3x-ui:
+    extends:
+      file: ./3x-ui/docker-compose.yml
+      service: 3x-ui
+
+  nginx:
+    extends:
+      file: ./nginx-3x-ui-subscription-proxy/docker-compose.yml
+      service: nginx-3x-ui 
