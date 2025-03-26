@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nginx_proxy_sub
+    env_file:
+      - .env
+    ports:
+      - ${SITE_PORT}:${SITE_PORT}
+    volumes:
+      - ${PATH_SSL_KEY}/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+      - ${PATH_SSL_KEY}/privkey.pem:/etc/nginx/ssl/privkey.pem 
+    restart: always
