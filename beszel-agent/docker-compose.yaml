@@ -1,0 +1,27 @@
+services:
+  beszel-agent:
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - ../_secrets/beszel.env
+    environment:
+      - PORT=45876
+      - MEM_CALC=htop
+      - KEY_FILE=../_secrets/beszel_agent_key
+    secrets:
+      - beszel_agent_key
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "45876"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+#TODO: проверить нормальную работу с секретами после релиза больше v0.9.1 https://github.com/henrygd/beszel/releases
+secrets:
+  beszel_agent_key:
+    file: ../_secrets/beszel_agent_key

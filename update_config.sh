@@ -24,7 +24,7 @@ generate_reality_keys() {
 
 # Останавливаем контейнер перед изменением базы
 echo "=== Остановка контейнера ==="
-cd 3x-ui
+cd /3x-ui
 docker-compose down
 cd ..
 
