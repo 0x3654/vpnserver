@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Проверка и установка sqlite3
-if ! command -v sqlite3 &> /dev/null; then
-    echo "=== Установка sqlite3 ==="
-    apt-get update && apt-get install -y sqlite3
-fi
-
 # Функция для генерации случайного порта (от 10000 до 65535)
 generate_random_port() {
     echo $((RANDOM % 55535 + 10000))

@@ -2,7 +2,7 @@
 # Переход в корневую директорию
 cd /
 # Обновление системы
-apt update && apt full-upgrade -y && apt install docker.io docker-compose git curl bash openssl htop -y
+apt update && apt full-upgrade -y && apt install docker.io docker-compose git curl bash openssl htop vim sqlite3 ufw -y
 # Клонирование репозитория
 git clone https://github.com/0x3654/xray-server 
 
