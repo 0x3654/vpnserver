@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Проверка и установка sqlite3
+if ! command -v sqlite3 &> /dev/null; then
+    echo "=== Установка sqlite3 ==="
+    apt-get update && apt-get install -y sqlite3
+fi
+
 # Функция для генерации случайного порта (от 10000 до 65535)
 generate_random_port() {
     echo $((RANDOM % 55535 + 10000))
@@ -24,9 +30,31 @@ generate_reality_keys() {
 
 # Останавливаем контейнер перед изменением базы
 echo "=== Остановка контейнера ==="
-cd /3x-ui
+cd /xray-server/3x-ui
 docker-compose down
-cd ..
+
+# Проверяем наличие базы данных
+if [ ! -f "db/x-ui.db" ]; then
+    echo "ОШИБКА: База данных не найдена в db/x-ui.db"
+    echo "Восстанавливаем контейнер..."
+    docker-compose up -d
+    exit 1
+fi
+
+# Создаем резервную копию базы данных
+echo "=== Создание резервной копии базы данных ==="
+cp db/x-ui.db db/x-ui.db.backup
+
+# Проверяем успешность выполнения SQL-запросов
+check_sql_error() {
+    if [ $? -ne 0 ]; then
+        echo "ОШИБКА: Ошибка при выполнении SQL-запроса"
+        echo "Восстанавливаем базу из резервной копии..."
+        cp db/x-ui.db.backup db/x-ui.db
+        docker-compose up -d
+        exit 1
+    fi
+}
 
 # Получаем внешний IP
 EXTERNAL_IP=$(curl -s ifconfig.me)
@@ -40,13 +68,17 @@ PUBLIC_KEY=$(echo $REALITY_KEYS | cut -d'|' -f2)
 SHORT_ID=$(echo $REALITY_KEYS | cut -d'|' -f3)
 
 # Сохраняем ID клиентов
-CLIENT_IDS=$(sqlite3 3x-ui/db/x-ui.db "SELECT json_extract(value, '$.id') FROM inbounds, json_each(json_extract(inbounds.settings, '$.clients')) WHERE inbounds.id = 1;" | tr '\n' '|')
+CLIENT_IDS=$(sqlite3 /xray-server/3x-ui/db/x-ui.db "SELECT json_extract(value, '$.id') FROM inbounds, json_each(json_extract(inbounds.settings, '$.clients')) WHERE inbounds.id = 1;" | tr '\n' '|')
 
 # Обновляем настройки в базе
-sqlite3 3x-ui/db/x-ui.db << EOF
+echo "=== Обновление настроек в базе данных ==="
+sqlite3 /xray-server/3x-ui/db/x-ui.db << EOF
 UPDATE settings SET value = '$WEB_PORT' WHERE key = 'webPort';
 UPDATE settings SET value = '$BASE_PATH' WHERE key = 'webBasePath';
+EOF
+check_sql_error
 
+sqlite3 /xray-server/3x-ui/db/x-ui.db << EOF
 UPDATE inbounds SET 
     listen = '$EXTERNAL_IP',
     settings = json_replace(
@@ -64,6 +96,7 @@ UPDATE inbounds SET
     )
 WHERE id = 1;
 EOF
+check_sql_error
 
 # Выводим информацию
 echo "=== Новые настройки ==="
@@ -76,7 +109,7 @@ echo $CLIENT_IDS | tr '|' '\n'
 
 # Запускаем контейнер
 echo "=== Запуск контейнера ==="
-cd 3x-ui
+cd /xray-server/3x-ui
 docker-compose up -d
 cd ..
 
