@@ -4,7 +4,7 @@ services:
     container_name: 3x-ui
     hostname: yourhostname
     volumes:
-      - /db/:/etc/x-ui/
+      - ./db/:/etc/x-ui/
       - /public.key:/public.key
       - /private.key:/private.key
     environment:

@@ -8,5 +8,10 @@ services:
 
   nginx:
     extends:
-      file: ./nginx-3x-ui-subscription-proxy/docker-compose.yml
+      file: ./nginx-subscription-proxy/docker-compose.yml
       service: nginx-3x-ui 
+
+  beszel:
+    extends:
+      file: ./beszel-agent/docker-compose.yml
+      service: beszel
