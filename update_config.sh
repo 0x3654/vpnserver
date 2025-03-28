@@ -61,7 +61,6 @@ echo "Получен внешний IP: $EXTERNAL_IP"
 
 # Получаем текущий секрет
 CURRENT_SECRET=$(sqlite3 /xray-server/3x-ui/db/x-ui.db "SELECT value FROM settings WHERE key = 'secret';")
-echo "Текущий секрет: $CURRENT_SECRET"
 
 # Генерируем новые значения
 WEB_PORT=$(generate_random_port)
@@ -96,11 +95,12 @@ UPDATE inbounds SET
         '$.clients[3].id', '$(echo $CLIENT_IDS | cut -d'|' -f4)',
         '$.clients[4].id', '$(echo $CLIENT_IDS | cut -d'|' -f5)'
     ),
-    streamSettings = json_replace(
-        streamSettings,
+    stream_settings = json_replace(
+        stream_settings,
         '$.realitySettings.privateKey', '$PRIVATE_KEY',
         '$.realitySettings.publicKey', '$PUBLIC_KEY',
-        '$.realitySettings.shortIds[0]', '$SHORT_ID'
+        '$.realitySettings.shortIds[0]', '$SHORT_ID',
+        '$.realitySettings.settings.publicKey', '$PUBLIC_KEY'
     )
 WHERE id = 1;
 EOF
