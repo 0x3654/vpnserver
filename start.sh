@@ -24,4 +24,4 @@ chmod +x /xray-server/warp_install.sh
 # Запуск docker-compose в директории /3x-ui/
 cd /xray-server/3x-ui/ && docker-compose up -d
 # Запуск WARP скрипта с параметрами
-cd /xray-server/ && .warp_install.sh -y -f
+cd /xray-server/ && bash warp_install.sh -y -f
