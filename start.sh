@@ -1,6 +1,6 @@
 #!/bin/bash
 #выполнить перед этим 
-ш#wget https://raw.githubusercontent.com/0x3654/xray-server/main/install.sh -O start.sh && chmod +x start.sh && ./start.sh
+#wget https://raw.githubusercontent.com/0x3654/xray-server/main/install.sh -O start.sh && chmod +x start.sh && bash /start.sh
 
 # Переход в корневую директорию
 cd /
