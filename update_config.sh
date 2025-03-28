@@ -99,8 +99,7 @@ UPDATE inbounds SET
         stream_settings,
         '$.realitySettings.privateKey', '$PRIVATE_KEY',
         '$.realitySettings.publicKey', '$PUBLIC_KEY',
-        '$.realitySettings.shortIds[0]', '$SHORT_ID',
-        '$.realitySettings.settings.publicKey', '$PUBLIC_KEY'
+        '$.realitySettings.shortIds[0]', '$SHORT_ID'
     )
 WHERE id = 1;
 EOF
