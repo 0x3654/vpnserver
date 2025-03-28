@@ -20,7 +20,7 @@ openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout private.key -out publi
 
 
 chmod +x /xray-server/update_config.sh
-chmod +x /xray-server/3x-ui/warp_install.sh
+chmod +x /xray-server/warp_install.sh
 # Запуск docker-compose в директории /3x-ui/
 cd /xray-server/3x-ui/ && docker-compose up -d
 # Запуск WARP скрипта с параметрами
