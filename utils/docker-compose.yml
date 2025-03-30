@@ -10,13 +10,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # monitor other disks / partitions by mounting a folder in /extra-filesystems
       # - /mnt/disk/.beszel:/extra-filesystems/sda1:ro
-    environment:
-      LISTEN: port
-      KEY: "123"   
+    env_file:
+      - .env
 
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
+    network_mode: host
     security_opt:
       - no-new-privileges:true
     volumes:
