@@ -1,6 +1,6 @@
 #!/bin/bash
 #выполнить перед этим 
-#wget https://raw.githubusercontent.com/0x3654/xray-server/main/install.sh -O start.sh && chmod +x start.sh && bash /start.sh
+#wget https://raw.githubusercontent.com/0x3654/xray-server/main/start.sh -O start.sh && chmod +x start.sh && bash /start.sh
 
 # Переход в корневую директорию
 cd /
@@ -22,6 +22,6 @@ openssl req -x509 -newkey rsa:4096 -nodes -sha256 -keyout private.key -out publi
 chmod +x /xray-server/update_config.sh
 chmod +x /xray-server/warp_install.sh
 # Запуск docker-compose в директории /3x-ui/
-cd /xray-server/3x-ui/ && docker-compose up -d
+cd /xray-server/3x-ui/ && docker-compose up -
 # Запуск WARP скрипта с параметрами
 cd /xray-server/ && bash warp_install.sh -y -f
