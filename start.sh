@@ -25,3 +25,22 @@ chmod +x /xray-server/warp_install.sh
 cd /xray-server/3x-ui/ && docker-compose up -
 # Запуск WARP скрипта с параметрами
 cd /xray-server/ && bash warp_install.sh -y -f
+
+sqlite3 '/xray-server/3x-ui/db/x-ui.db' < import.sql
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
