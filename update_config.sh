@@ -27,40 +27,14 @@ generate_password() {
     echo "${password:0:5}-${password:5:5}-${password:10:5}"
 }
 
-# Останавливаем контейнер перед изменением базы
-echo "=== Остановка контейнера ==="
-cd /xray-server/3x-ui
-docker-compose down
-
-# Проверяем наличие базы данных
-if [ ! -f "/xray-server/3x-ui/db/x-ui.db" ]; then
-    echo "ОШИБКА: База данных не найдена в /xray-server/3x-ui/db/x-ui.db"
-    echo "Восстанавливаем контейнер..."
-    docker-compose up -d
-    exit 1
-fi
-
 # Создаем резервную копию базы данных
 echo "=== Создание резервной копии базы данных ==="
 cp /xray-server/3x-ui/db/x-ui.db /xray-server/3x-ui/db/x-ui.db.backup
-
-# Проверяем успешность выполнения SQL-запросов
-check_sql_error() {
-    if [ $? -ne 0 ]; then
-        echo "ОШИБКА: Ошибка при выполнении SQL-запроса"
-        echo "Восстанавливаем базу из резервной копии..."
-        cp /xray-server/3x-ui/db/x-ui.db.backup /xray-server/3x-ui/db/x-ui.db
-        docker-compose up -d
-        exit 1
-    fi
-}
 
 # Получаем внешний IP
 EXTERNAL_IP=$(curl -s ifconfig.me)
 echo "Получен внешний IP: $EXTERNAL_IP"
 
-# Получаем текущий секрет
-CURRENT_SECRET=$(sqlite3 /xray-server/3x-ui/db/x-ui.db "SELECT value FROM settings WHERE key = 'secret';")
 
 # Генерируем новые значения
 WEB_PORT=$(generate_random_port)

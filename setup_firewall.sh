@@ -25,6 +25,8 @@ else
     exit 1
 fi
 
+#порт нужен для обновления сертификата через certbot
+ufw allow 80/tcp
 # Разрешаем SSH
 ufw allow 22/tcp 
 # Разрешаем порт для VLESS/XTLS Reality
