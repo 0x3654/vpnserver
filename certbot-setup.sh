@@ -1,4 +1,13 @@
 #!/bin/bash
+
+# Проверка наличия certbot
+if ! command -v certbot &> /dev/null; then
+    echo "Ошибка: certbot не установлен"
+    echo "Установите certbot командой:"
+    echo "sudo apt update && sudo apt install certbot"
+    exit 1
+fi
+
 # Запрос домена
 read -p "Введите ваш домен (например, example.com): " DOMAIN
 
