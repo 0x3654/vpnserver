@@ -1,8 +1,6 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
---INSERT INTO users VALUES(1,'root','zekve4-wybKik-dymsib','');
 UPDATE users SET username='root', password='zekve4-wybKik-dymsib', login_secret='';
---INSERT INTO settings VALUES(1,'secret','inOMWF6DwawVxgpuQ5Q62Ly4RJ83HDfS');
 INSERT OR REPLACE INTO settings VALUES(2,'webListen','');
 INSERT OR REPLACE INTO settings VALUES(3,'webDomain','');
 INSERT OR REPLACE INTO settings VALUES(4,'webPort','39866');

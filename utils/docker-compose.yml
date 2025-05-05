@@ -29,6 +29,19 @@ services:
       - WATCHTOWER_INCLUDE_STOPPED=true
       - WATCHTOWER_REVIVE_STOPPED=false
       - WATCHTOWER_NOTIFICATIONS=shoutrrr
- #     - WATCHTOWER_NOTIFICATION_URL=telegram://ZZZZZZZZZZ:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@telegram/?channels=XXXXXXX
+#     - WATCHTOWER_NOTIFICATION_URL=telegram://ZZZZZZZZZZ:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX@telegram/?channels=XXXXXXX
+# OR if youn need support topic
+# in api link replace ":" with "%3A"
+#   - WATCHTOWER_NOTIFICATION_URL=generic://api.telegram.org/bot{xxx}%3A{token}/sendMessage
+#   - 'WATCHTOWER_NOTIFICATION_TEMPLATE={{if .}}{"text":"{{range .}}{{.Message}}\n{{end}}","chat_id":"{id}","message_thread_id":"5"}{{end}}'
     restart: unless-stopped
- 
+  exporter:
+    image: registry.gitlab.com/hctrdev/fail2ban-prometheus-exporter:latest
+    container_name: fail2ban_export
+    volumes:
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro  
+    - /var/run/fail2ban/:/var/run/fail2ban:ro
+    ports:
+    - "9191:9191"
+    restart: unless-stopped

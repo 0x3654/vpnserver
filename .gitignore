@@ -9,9 +9,13 @@ Thumbs.db
 # Environment files
 *.pem
 *.key
+*.env
 
 # Logs
 *.log
 
 # Database
-3x-ui/db/ 
+#3x-ui/db/ 
+
+#TODO
+.todo
