@@ -3,10 +3,10 @@ volumes:
 
 services:
   amnezia-wg-easy:
+    container_name: awg
     env_file:
       - .env
     image: ghcr.io/spcfox/amnezia-wg-easy
-    container_name: awg
     volumes:
       - ~/.amnezia-wg-easy:/etc/wireguard
     ports:
