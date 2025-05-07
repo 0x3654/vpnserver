@@ -2,6 +2,9 @@
 .docker/
 docker-compose.override.yml
 
+# manual scripts
+/_scripts/*
+
 # System files
 .DS_Store
 Thumbs.db

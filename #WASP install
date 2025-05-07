@@ -1,0 +1,2 @@
+#WASP install
+sudo wget -O - https://raw.githubusercontent.com/hamid-gh98/x-ui-scripts/main/install_warp_proxy.sh | sudo bash
