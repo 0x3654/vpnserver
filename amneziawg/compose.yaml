@@ -1,0 +1,28 @@
+services:
+  amnezia-wg-easy:
+    container_name: awg
+    image: ghcr.io/spcfox/amnezia-wg-easy:latest
+    environment:
+      WG_HOST: "{{ domain_name }}"
+      PASSWORD: "{{ amneziawg_password }}"
+      LANGUAGE: en
+      PORT: "{{ amneziawg_port }}"
+      WG_DEVICE: "{{ ansible_default_ipv4.interface }}"
+      WG_PORT: "{{ amneziawg_wg_port }}"
+      WG_DEFAULT_ADDRESS: 10.8.0.x
+      WG_DEFAULT_DNS: 1.1.1.1
+      WG_ALLOWED_IPS: "0.0.0.0/0, ::/0"
+    volumes:
+      - "{{ amneziawg_path }}/.awg:/etc/wireguard"
+    ports:
+      - "{{ amneziawg_wg_port }}:51820/udp"
+      - "{{ amneziawg_port }}:{{ amneziawg_port }}/tcp"
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    devices:
+      - /dev/net/tun:/dev/net/tun

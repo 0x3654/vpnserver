@@ -1,0 +1,18 @@
+services:
+  # 3x-ui service
+  3x-ui:
+    extends:
+      file: ./3x-ui/compose.yaml
+      service: 3x-ui
+
+  # AmneziaWG service
+  amnezia-wg-easy:
+    extends:
+      file: ./amneziawg/compose.yaml
+      service: amnezia-wg-easy
+
+  # Fail2ban service
+  fail2ban:
+    extends:
+      file: ./fail2ban/compose.yaml
+      service: fail2ban
